@@ -2,8 +2,9 @@
 
 import requests
 
-class apiClient:
-
+class ApiClient:
+    
+    #Returns a list of trials object
     def getTrialsFor(self, age, sex, isHealthy, max_trials):
 
         params = {
@@ -13,6 +14,7 @@ class apiClient:
         }
 
         jsonResponse = self.createRequest(params)
+
         return jsonResponse
 
     #Run the request on the API with the specified parameters and returns a JSON file
@@ -25,5 +27,14 @@ class apiClient:
         return jsondata
 
 
-client = apiClient()
-print(client.getTrialsFor(13,"male", False, 20))
+client = ApiClient()
+
+#Class for 
+class Trial:
+
+    def __init__(self, NTCid, briefTitle, organization, condition, locationContactPhone, locationContactEmail):
+        self.NTCid = NTCid
+        self.briefTitle = briefTitle
+        self.condition = condition
+        self.locationContactEmail = locationContactEmail
+    
