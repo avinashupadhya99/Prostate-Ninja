@@ -9,7 +9,7 @@ A web-application to find clinical trials around you based on your age, sex and 
 - Clone the repository (`git clone https://github.com/avinashupadhya99/Prostate-Ninja.git`)
 - `cd Prostate-Ninja`
 
-Using python environment -
+Using **python virtual environment
 
 - `python -m venv venv`
 - On Windows: `venv\Scripts\activate` and On Mac/Linux `source venv/bin/activate`
