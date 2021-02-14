@@ -136,10 +136,3 @@ class Trial:
         self.url = f"https://clinicaltrials.gov/ct2/show/{NCTid}"
         self.minimumAge = minimumAge
         self.maximumAge = maximumAge
-
-if __name__ == "__main__":
-
-    apiClient = ApiClient()
-    studies = apiClient.getTrialsFor(age = 35, sex = GenderEnum.male, isHealthy = HealthyVolunteersEnum.healthy)
-    for study in studies:
-        print(f"Minimum Age: {study.minimumAge} --- Maximum Age: {study.maximumAge}")
