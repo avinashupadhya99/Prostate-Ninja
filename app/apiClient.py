@@ -15,11 +15,14 @@ for trial in trials:
 #Trial object property: 
 - NCTid
 - briefTitle
+- brief summary
 - organization
 - conditions (list of strings)
 
 - minimum age
 - maximum age
+- eligibility criterias (list of criterias to be elegible - i.e list of string)
+
 - url (resolved with the NCTid)
 
 - locationState
@@ -79,6 +82,15 @@ class ApiClient:
         conditions = study['Study']['ProtocolSection']['ConditionsModule']['ConditionList']['Condition']
         briefSummary = study['Study']['ProtocolSection']['DescriptionModule']['BriefSummary']
 
+        #get eligibilityCriterias
+        try :
+            if study['Study']['ProtocolSection']['EligibilityModule']['EligibilityCriteria']:
+                eligibilityCriterias = study['Study']['ProtocolSection']['EligibilityModule']['EligibilityCriteria'].splitlines()
+            else:
+                eligibilityCriterias = "No data available"
+        except:
+            eligibilityCriterias = "No data available"
+
         #get minimumAge
         try:
             if study['Study']['ProtocolSection']['EligibilityModule']['MinimumAge']:
@@ -126,7 +138,8 @@ class ApiClient:
                 locationCity = locationCity,
                 locationFacility = locationFacility,
                 minimumAge = minumumAge,
-                maximumAge = maximumAge
+                maximumAge = maximumAge,
+                eligibilityCriterias = eligibilityCriterias
             )
 
         return trial
@@ -143,12 +156,14 @@ class ApiClient:
 #Model
 class Trial:
 
-    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], briefSummary: str, locationState: str, locationCity: str, locationFacility: str, minimumAge: int, maximumAge: int):
+    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], briefSummary: str, locationState: str, locationCity: str, locationFacility: str, minimumAge: int, maximumAge: int, eligibilityCriterias: [str]):
         
         self.NCTid = NCTid
         self.briefTitle = briefTitle
         self.briefSummary = briefSummary
         self.conditions = conditions
+
+        self.eligibilityCriterias = eligibilityCriterias
 
         self.url = f"https://clinicaltrials.gov/ct2/show/{NCTid}"
         self.minimumAge = minimumAge
@@ -164,4 +179,7 @@ if __name__ == "__main__":
     apiClient = ApiClient()
     studies = apiClient.getTrialsFor(age = 35, location = "California" , sex = GenderEnum.male, isHealthy = HealthyVolunteersEnum.healthy)
     for study in studies:
-        print(f"Brief Summary - {study.briefSummary}")
+        print("STUDY: ")
+        print(f"Eligibility Criteria:")
+        for criteria in study.eligibilityCriterias:
+            print(criteria)
