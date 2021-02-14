@@ -80,6 +80,7 @@
       <label for="notHealthy">I am not a patient</label><br>
       <input type="submit" />
     </form>
+
     {% if studies  is defined %}
     <h2>Results - Clinical Trials Running</h2>
       {% for study in studies %}
@@ -92,7 +93,8 @@
             <b>LocationState</b>    - {{study.locationState}} <br/>
             <b>LocationFacility</b> - {{study.locationFacility}} <br/>
             <b>Minimum Age</b>      - {{study.minimumAge if (study.minimumAge | int)>=0 else 'No minimum age'}} <br/>
-            <b>Maximum Age</b>      - {{study.maximumAge if (study.maximumAge | int)<=100 else 'No maximum age' }}
+            <b>Maximum Age</b>      - {{study.maximumAge if (study.maximumAge | int)<=100 else 'No maximum age' }} <br/>
+            <b>Link To Study</b> - <a href = '{{study.url}}'> Go to ClinicalTrials.gov</a><br/>
           </div>
           <hr/>
       {% endfor %}

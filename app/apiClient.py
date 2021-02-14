@@ -56,13 +56,6 @@ class ApiClient:
         jsonResponse = self.createRequest(params)
         trialsArray = []
         
-        try :
-            if study['Study']['ProtocolSection']['EligibilityModule']['EligibilityCriteria']:
-                eligibilityCriterias = study['Study']['ProtocolSection']['EligibilityModule']['EligibilityCriteria'].splitlines()
-            else:
-                eligibilityCriterias = "No data available"
-        except:
-            eligibilityCriterias = "No data available"
 
         try:
             if jsonResponse['FullStudiesResponse']['FullStudies']:
