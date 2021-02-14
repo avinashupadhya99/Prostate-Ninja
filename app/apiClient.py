@@ -35,12 +35,10 @@ class HealthyVolunteersEnum(Enum):
 class ApiClient:
 
     #Returns a list of trials object
-    def getTrialsFor(self, age: int, sex: GenderEnum, isHealthy: HealthyVolunteersEnum, max_trials = 100):
-
-       
+    def getTrialsFor(self, age: int, sex: GenderEnum, location: str, isHealthy: HealthyVolunteersEnum, max_trials = 100):
 
         params = {
-            'expr' : f'prostate cancer AND AREA[HealthyVolunteers]"{isHealthy.value}" AND (AREA[Gender]"{sex.value}" OR Area[Gender]"All") AND SEARCH[Location](AREA[LocationCountry]United States AND AREA[LocationStatus]Recruiting)',
+            'expr' : f'{location} AND AREA[HealthyVolunteers]"{isHealthy.value}" AND (AREA[Gender]"{sex.value}" OR Area[Gender]"All") AND SEARCH[Location](AREA[LocationCountry]United States AND AREA[LocationStatus]Recruiting)',
             'fmt' : 'JSON',
             'max_rnk': max_trials
         }
@@ -94,22 +92,32 @@ class ApiClient:
         except:
                 maximumAge = "101"
 
+        locationState = study['Study']['ProtocolSection']['ContactsLocationsModule']['LocationList']['Location'][0]['LocationState']
 
         #Contact Details of Location
         try:
             if study['Study']['ProtocolSection']['ContactsLocationsModule']['LocationList']['Location']:
-                locationState = study['Study']['ContactsLocationsModule']['LocationList']['Location'][0]['LocationState']
+
+                locationState = study['Study']['ProtocolSection']['ContactsLocationsModule']['LocationList']['Location'][0]['LocationState']
+                locationCity = study['Study']['ProtocolSection']['ContactsLocationsModule']['LocationList']['Location'][0]['LocationCity']
+                locationFacility = study['Study']['ProtocolSection']['ContactsLocationsModule']['LocationList']['Location'][0]['LocationFacility']
+
             else:
                 locationState = "No data Available"
-
+                locationCity = "No data Available"
+                locationFacility = "No data Available"
         except:
             locationState = "No data Available"
-
+            locationCity = "No data Available"
+            locationFacility = "No data Available"
+        
         trial = Trial(NCTid = NCTid, 
                 briefTitle = briefTitle, 
                 organization = organization, 
                 conditions = conditions, 
                 locationState = locationState,
+                locationCity = locationCity,
+                locationFacility = locationFacility,
                 minimumAge = minumumAge,
                 maximumAge = maximumAge
             )
@@ -128,18 +136,23 @@ class ApiClient:
 #Model
 class Trial:
 
-    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], locationState: str, minimumAge: int, maximumAge: int):
+    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], locationState: str, locationCity: str, locationFacility: str, minimumAge: int, maximumAge: int):
         self.NCTid = NCTid
         self.briefTitle = briefTitle
         self.conditions = conditions
-        self.locationState = locationState
+
         self.url = f"https://clinicaltrials.gov/ct2/show/{NCTid}"
         self.minimumAge = minimumAge
         self.maximumAge = maximumAge
 
-if __name__ == "__main__":
+        #Location information
+        self.locationState = locationState
+        self.locationCity = locationCity
+        self.locationFacility = locationFacility
 
+
+if __name__ == "__main__":
     apiClient = ApiClient()
-    studies = apiClient.getTrialsFor(age = 35, sex = GenderEnum.male, isHealthy = HealthyVolunteersEnum.healthy)
+    studies = apiClient.getTrialsFor(age = 35, location = "California" , sex = GenderEnum.male, isHealthy = HealthyVolunteersEnum.healthy)
     for study in studies:
-        print(f"Minimum Age: {study.minimumAge} --- Maximum Age: {study.maximumAge}")
+        print(f"study location - {study.locationState}, {study.locationCity}, {study.locationFacility}")
