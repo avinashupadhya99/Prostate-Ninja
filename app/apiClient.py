@@ -29,6 +29,8 @@ for trial in trials:
 - locationCity
 - locationFacility
 
+- status
+-phase
 
 '''
 
@@ -81,6 +83,17 @@ class ApiClient:
         organization = study['Study']['ProtocolSection']['IdentificationModule']['Organization']['OrgFullName']
         conditions = study['Study']['ProtocolSection']['ConditionsModule']['ConditionList']['Condition']
         briefSummary = study['Study']['ProtocolSection']['DescriptionModule']['BriefSummary']
+
+        status = study['Study']['ProtocolSection']['StatusModule']['OverallStatus']
+
+        #get phases
+        try:
+            if study['Study']['ProtocolSection']['DesignModule']['PhaseList']['Phase']:
+                phase = study['Study']['ProtocolSection']['DesignModule']['PhaseList']['Phase'][0]
+            else:
+                phase = "No data Available"
+        except: 
+            phase = "No data Available"
 
         #get eligibilityCriterias
         try :
@@ -139,7 +152,9 @@ class ApiClient:
                 locationFacility = locationFacility,
                 minimumAge = minumumAge,
                 maximumAge = maximumAge,
-                eligibilityCriterias = eligibilityCriterias
+                eligibilityCriterias = eligibilityCriterias,
+                status = status,
+                phase = phase
             )
 
         return trial
@@ -156,7 +171,7 @@ class ApiClient:
 #Model
 class Trial:
 
-    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], briefSummary: str, locationState: str, locationCity: str, locationFacility: str, minimumAge: int, maximumAge: int, eligibilityCriterias: [str]):
+    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], briefSummary: str, locationState: str, locationCity: str, locationFacility: str, minimumAge: int, maximumAge: int, eligibilityCriterias: [str], status: str, phase: str):
         
         self.NCTid = NCTid
         self.briefTitle = briefTitle
@@ -173,6 +188,9 @@ class Trial:
         self.locationState = locationState
         self.locationCity = locationCity
         self.locationFacility = locationFacility
+
+        self.status = status
+        self.phase = phase
         
 
 if __name__ == "__main__":
@@ -180,6 +198,5 @@ if __name__ == "__main__":
     studies = apiClient.getTrialsFor(age = 35, location = "California" , sex = GenderEnum.male, isHealthy = HealthyVolunteersEnum.healthy)
     for study in studies:
         print("STUDY: ")
-        print(f"Eligibility Criteria:")
-        for criteria in study.eligibilityCriterias:
-            print(criteria)
+        print(f"phase: {study.phase} - status: {study.status}")
+        print('--------------')
