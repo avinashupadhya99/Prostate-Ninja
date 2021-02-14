@@ -6,6 +6,7 @@ from app.apiClient import *
 def index():
     if request.method == 'POST':
         location = request.form['location']
+        print(location)
         age = int(request.form['age'])
         sex = request.form['sex']
         health = request.form['health']
