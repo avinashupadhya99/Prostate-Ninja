@@ -2,7 +2,7 @@
 
 ### About the project
 
-An application to find clinical trials around you based on your preferences. This project was made for [MakeHarvard 2021](https://www.makeharvard.io/).
+A web-application to find clinical trials around you based on your age, sex and clinical conditions. This project was made for [MakeHarvard 2021](https://www.makeharvard.io/). 
 
 ### Steps to start the application
 
