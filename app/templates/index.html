@@ -77,6 +77,9 @@
       <label for="notHealthy">I am not a patient</label><br>
       <input type="submit" />
     </form>
+    {% if message  is defined %}
+      <h3>{{ message }}</h3>
+    {% endif %}
     {% if studies  is defined %}
       {% for study in studies %}
           <h4>Study {{ loop.index }}-</h4>

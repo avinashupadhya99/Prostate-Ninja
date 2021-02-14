@@ -9,13 +9,14 @@ def index():
         age = int(request.form['age'])
         sex = request.form['sex']
         health = request.form['health']
+        message = 'Showing results for {} {} patients aged {} based in {}, USA'.format(sex, health, age, location)
         gender = GenderEnum.male if sex=='Male' else GenderEnum.female
         isHealthy = HealthyVolunteersEnum.healthy if health=='healthy' else HealthyVolunteersEnum.notHealthy
         apiClient = ApiClient()
         studies = apiClient.getTrialsFor(age = age, location=location, sex = gender, isHealthy = isHealthy)
         for study in studies:
             print(study.organization)
-        return render_template('index.html', studies=studies)
+        return render_template('index.html', studies=studies, message=message)
     else:
         return render_template('index.html')
 
