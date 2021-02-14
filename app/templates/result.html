@@ -6,19 +6,21 @@
   <link rel="stylesheet" href="../static/css/style.css" />
   <body>
     <h1>Prostate Ninja!</h1>
-    {% for study in studies %}
-        <h4>Study {{ loop.index }}-</h4>
-        <div>
-          <b>Trial</b>            - {{study.briefTitle}} <br/>
-          <b>Organisation</b>     - {{study.organization}} <br/>
-          <b>Conditions</b>       - {{study.conditions}} <br/>
-          <b>LocationCity</b>     - {{study.locationCity}} <br/>
-          <b>LocationState</b>    - {{study.locationState}} <br/>
-          <b>LocationFacility</b> - {{study.locationFacility}} <br/>
-          <b>Minimum Age</b>      - {{study.minimumAge if (study.minimumAge | int)>=0 else 'No minimum age'}} <br/>
-          <b>Maximum Age</b>      - {{study.maximumAge if (study.maximumAge | int)<=100 else 'No maximum age' }}
-        </div>
-        <hr/>
-    {% endfor %}
+    {% if studies  is defined %}
+      {% for study in studies %}
+          <h4>Study {{ loop.index }}-</h4>
+          <div>
+            <b>Trial</b>            - {{study.briefTitle}} <br/>
+            <b>Organisation</b>     - {{study.organization}} <br/>
+            <b>Conditions</b>       - {{study.conditions}} <br/>
+            <b>LocationCity</b>     - {{study.locationCity}} <br/>
+            <b>LocationState</b>    - {{study.locationState}} <br/>
+            <b>LocationFacility</b> - {{study.locationFacility}} <br/>
+            <b>Minimum Age</b>      - {{study.minimumAge if (study.minimumAge | int)>=0 else 'No minimum age'}} <br/>
+            <b>Maximum Age</b>      - {{study.maximumAge if (study.maximumAge | int)<=100 else 'No maximum age' }}
+          </div>
+          <hr/>
+      {% endfor %}
+    {% endif %}
   </body>
 </html>
