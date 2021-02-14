@@ -4,10 +4,10 @@ from enum import Enum
 
 #Usage
 '''
-
+- import it 
 apiClient = ApiClient()
 
-trials = apiClient.getTrialsFor(age = 29, sex = GenderEnum.male, isHealthy = HealthyVolunteersEnum.healthy) 
+trials = apiClient.getTrialsFor(age = 29, sex = GenderEnum.male.value, isHealthy = HealthyVolunteersEnum.healthy.value) 
 
 for trial in trials:
     print(trial.briefTitle)
@@ -18,6 +18,9 @@ for trial in trials:
 - organization
 - conditions (list of strings)
 - locationState
+- minimum age
+- maximum age
+- url (resolved with the NCTid)
 
 '''
 
