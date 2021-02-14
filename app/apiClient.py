@@ -149,6 +149,7 @@ class Trial:
         self.briefTitle = briefTitle
         self.briefSummary = briefSummary
         self.conditions = conditions
+        self.organization = organization
 
         self.url = f"https://clinicaltrials.gov/ct2/show/{NCTid}"
         self.minimumAge = minimumAge
