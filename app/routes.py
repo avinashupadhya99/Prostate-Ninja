@@ -15,8 +15,8 @@ def get_results():
     gender = GenderEnum.male if sex=='Male' else GenderEnum.female
     isHealthy = HealthyVolunteersEnum.healthy if health=='healthy' else HealthyVolunteersEnum.notHealthy
     apiClient = ApiClient()
-    studies = apiClient.getTrialsFor(age = age, sex = gender, isHealthy = isHealthy)
-    for study in studies:
-        print(f"Minimum Age: {study.minimumAge} --- Maximum Age: {study.maximumAge}")
+
+    studies = apiClient.getTrialsFor(age = age, sex = gender, location = "", isHealthy = isHealthy)
     return render_template('result.html', studies=studies)
+
 
