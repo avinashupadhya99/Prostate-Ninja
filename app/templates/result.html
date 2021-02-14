@@ -9,12 +9,14 @@
     {% for study in studies %}
         <h4>Study {{ loop.index }}-</h4>
         <div>
-          <b>Trial</b>         - {{study.briefTitle}} <br/>
-          <b>Organisation</b>  - {{study.organization}} <br/>
-          <b>Conditions</b>    - {{study.conditions}} <br/>
-          <b>LocationState</b> - {{study.locationState}} <br/>
-          <b>Minimum Age</b>   - {{study.minimumAge if (study.minimumAge | int)>=0 else 'No minimum age'}} <br/>
-          <b>Maximum Age</b>   - {{study.maximumAge if (study.maximumAge | int)<=100 else 'No maximum age' }}
+          <b>Trial</b>            - {{study.briefTitle}} <br/>
+          <b>Organisation</b>     - {{study.organization}} <br/>
+          <b>Conditions</b>       - {{study.conditions}} <br/>
+          <b>LocationCity</b>     - {{study.locationCity}} <br/>
+          <b>LocationState</b>    - {{study.locationState}} <br/>
+          <b>LocationFacility</b> - {{study.locationFacility}} <br/>
+          <b>Minimum Age</b>      - {{study.minimumAge if (study.minimumAge | int)>=0 else 'No minimum age'}} <br/>
+          <b>Maximum Age</b>      - {{study.maximumAge if (study.maximumAge | int)<=100 else 'No maximum age' }}
         </div>
         <hr/>
     {% endfor %}
