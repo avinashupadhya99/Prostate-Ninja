@@ -7,7 +7,16 @@
   <body>
     <h1>Prostate Ninja!</h1>
     {% for study in studies %}
-        <div>Minimum Age: {{study.minimumAge}} --- Maximum Age: {{study.maximumAge}}</div>
+        <h4>Study {{ loop.index }}-</h4>
+        <div>
+          <b>Trial</b>         - {{study.briefTitle}} <br/>
+          <b>Organisation</b>  - {{study.organization}} <br/>
+          <b>Conditions</b>    - {{study.conditions}} <br/>
+          <b>LocationState</b> - {{study.locationState}} <br/>
+          <b>Minimum Age</b>   - {{study.minimumAge}} <br/>
+          <b>Maximum Age</b>   - {{study.maximumAge}}
+        </div>
+        <hr/>
     {% endfor %}
   </body>
 </html>
