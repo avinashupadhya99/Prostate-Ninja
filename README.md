@@ -12,6 +12,6 @@ A web-application to find clinical trials around you based on your age, sex and 
 Using python environment -
 
 - `python -m venv venv`
-- `venv\Scripts\activate` if Windows or `source venv/bin/activate` if other
+- On Windows: `venv\Scripts\activate` and On Mac/Linux `source venv/bin/activate`
 - `pip install flask`
 - `flask run`
