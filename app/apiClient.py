@@ -7,7 +7,7 @@ from enum import Enum
 - import it 
 apiClient = ApiClient()
 
-trials = apiClient.getTrialsFor(age = 29, sex = GenderEnum.male.value, isHealthy = HealthyVolunteersEnum.healthy.value) 
+trials = apiClient.getTrialsFor(age = 29, location = "California",sex = GenderEnum.male.value, isHealthy = HealthyVolunteersEnum.healthy.value) 
 
 for trial in trials:
     print(trial.briefTitle)
@@ -17,10 +17,15 @@ for trial in trials:
 - briefTitle
 - organization
 - conditions (list of strings)
-- locationState
+
 - minimum age
 - maximum age
 - url (resolved with the NCTid)
+
+- locationState
+- locationCity
+- locationFacility
+
 
 '''
 
@@ -38,7 +43,7 @@ class ApiClient:
     def getTrialsFor(self, age: int, sex: GenderEnum, location: str, isHealthy: HealthyVolunteersEnum, max_trials = 100):
 
         params = {
-            'expr' : f'{location} AND AREA[HealthyVolunteers]"{isHealthy.value}" AND (AREA[Gender]"{sex.value}" OR Area[Gender]"All") AND SEARCH[Location](AREA[LocationCountry]United States AND AREA[LocationStatus]Recruiting)',
+            'expr' : f'prostate cancer {location} AND AREA[HealthyVolunteers]"{isHealthy.value}" AND (AREA[Gender]"{sex.value}" OR Area[Gender]"All") AND SEARCH[Location](AREA[LocationCountry]United States AND AREA[LocationStatus]Recruiting)',
             'fmt' : 'JSON',
             'max_rnk': max_trials
         }
@@ -72,6 +77,7 @@ class ApiClient:
         briefTitle = study['Study']['ProtocolSection']['IdentificationModule']['BriefTitle']
         organization = study['Study']['ProtocolSection']['IdentificationModule']['Organization']['OrgFullName']
         conditions = study['Study']['ProtocolSection']['ConditionsModule']['ConditionList']['Condition']
+        briefSummary = study['Study']['ProtocolSection']['DescriptionModule']['BriefSummary']
 
         #get minimumAge
         try:
@@ -112,7 +118,8 @@ class ApiClient:
             locationFacility = "No data Available"
         
         trial = Trial(NCTid = NCTid, 
-                briefTitle = briefTitle, 
+                briefTitle = briefTitle,
+                briefSummary = briefSummary,
                 organization = organization, 
                 conditions = conditions, 
                 locationState = locationState,
@@ -136,9 +143,11 @@ class ApiClient:
 #Model
 class Trial:
 
-    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], locationState: str, locationCity: str, locationFacility: str, minimumAge: int, maximumAge: int):
+    def __init__(self, NCTid: str, briefTitle: str, organization, conditions: [str], briefSummary: str, locationState: str, locationCity: str, locationFacility: str, minimumAge: int, maximumAge: int):
+        
         self.NCTid = NCTid
         self.briefTitle = briefTitle
+        self.briefSummary = briefSummary
         self.conditions = conditions
 
         self.url = f"https://clinicaltrials.gov/ct2/show/{NCTid}"
@@ -149,10 +158,10 @@ class Trial:
         self.locationState = locationState
         self.locationCity = locationCity
         self.locationFacility = locationFacility
-
+        
 
 if __name__ == "__main__":
     apiClient = ApiClient()
     studies = apiClient.getTrialsFor(age = 35, location = "California" , sex = GenderEnum.male, isHealthy = HealthyVolunteersEnum.healthy)
     for study in studies:
-        print(f"study location - {study.locationState}, {study.locationCity}, {study.locationFacility}")
+        print(f"Brief Summary - {study.briefSummary}")
