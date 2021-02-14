@@ -56,13 +56,26 @@ class ApiClient:
         jsonResponse = self.createRequest(params)
         trialsArray = []
         
-        for study in jsonResponse['FullStudiesResponse']['FullStudies']:
-            decodedStudy = self.decodeJSON(study)
-            
+        try :
+            if study['Study']['ProtocolSection']['EligibilityModule']['EligibilityCriteria']:
+                eligibilityCriterias = study['Study']['ProtocolSection']['EligibilityModule']['EligibilityCriteria'].splitlines()
+            else:
+                eligibilityCriterias = "No data available"
+        except:
+            eligibilityCriterias = "No data available"
 
-            if self.isAgeMatching(age, int(decodedStudy.minimumAge), int(decodedStudy.maximumAge)):
-                trialsArray.append(decodedStudy)
-            
+        try:
+            if jsonResponse['FullStudiesResponse']['FullStudies']:
+                for study in jsonResponse['FullStudiesResponse']['FullStudies']:
+                    decodedStudy = self.decodeJSON(study)
+                    
+
+                    if self.isAgeMatching(age, int(decodedStudy.minimumAge), int(decodedStudy.maximumAge)):
+                        trialsArray.append(decodedStudy)
+            else:
+                trialsArray = []
+        except:
+            trialsArray = []
 
         return trialsArray
             
